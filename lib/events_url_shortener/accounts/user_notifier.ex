@@ -2,9 +2,10 @@ defmodule EventsUrlShortener.Accounts.UserNotifier do
   import Swoosh.Email
 
   alias EventsUrlShortener.Mailer
-@moduledoc """
-  # Delivers the email using the application mailer.
-"""
+
+  @moduledoc """
+    # Delivers the email using the application mailer.
+  """
   defp deliver(recipient, subject, body) do
     email =
       new()

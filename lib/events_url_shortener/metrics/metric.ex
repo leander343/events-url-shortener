@@ -2,9 +2,9 @@ defmodule EventsUrlShortener.Metrics.Metric do
   use Ecto.Schema
   import Ecto.Changeset
 
-@moduledoc """
-Schema for Metrics
-"""
+  @moduledoc """
+  Schema for Metrics
+  """
   schema "metrics" do
     field :browser_agent, :string
     field :location, :string

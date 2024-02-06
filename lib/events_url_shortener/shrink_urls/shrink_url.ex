@@ -2,9 +2,9 @@ defmodule EventsUrlShortener.ShrinkUrls.ShrinkUrl do
   use Ecto.Schema
   import Ecto.Changeset
 
-@moduledoc """
-Schema for Shrink URL
-"""
+  @moduledoc """
+  Schema for Shrink URL
+  """
   schema "shrink_url" do
     field :hit_count, :integer, default: 0
     field :key, :string

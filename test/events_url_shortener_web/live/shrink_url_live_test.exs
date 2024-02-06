@@ -1,4 +1,3 @@
-
 # TO DO: Figure out Auth and testing page
 # defmodule EventsUrlShortenerWeb.ShrinkUrlLiveTest do
 #   use EventsUrlShortenerWeb.ConnCase
@@ -88,7 +87,6 @@
 #       assert html =~ "Show Shrink url"
 #       assert html =~ shrink_url.key
 #     end
-
 
 #   end
 # end

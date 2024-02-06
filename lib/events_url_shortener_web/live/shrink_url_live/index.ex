@@ -43,7 +43,7 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.Index do
     {:noreply, stream_insert(socket, :shrink_url_collection, shrink_url)}
   end
 
- # Handle pub sub call from Gen Server and update metrics
+  # Handle pub sub call from Gen Server and update metrics
   @impl true
   def handle_info({:pubsub, _message}, socket) do
     send_update(EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent, id: "metrics")

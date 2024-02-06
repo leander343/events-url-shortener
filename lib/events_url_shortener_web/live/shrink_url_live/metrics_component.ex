@@ -6,15 +6,13 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
   def render(assigns) do
     ~H"""
     <div>
-
-    <h1>Usage Metrics</h1>
+      <h1>Usage Metrics</h1>
 
       <h2>Browser Types</h2>
       <%= @browser_chart_svg %>
 
       <h2>Location</h2>
       <%= @location_chart_svg %>
-
 
       <h2>OS Types</h2>
       <%= @os_chart_svg %>
@@ -23,8 +21,9 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
   end
 
   @impl true
-  def update(assigns,socket) do
-    IO.puts "here"
+  def update(assigns, socket) do
+    IO.puts("here")
+
     {:ok,
      socket
      |> assign(assigns)

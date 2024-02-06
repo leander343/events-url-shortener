@@ -33,11 +33,7 @@
   </:action>
 </.table>
 
-
-  <.live_component
-    module={EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent}
-    id="metrics"
-  />
+<.live_component module={EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent} id="metrics" />
 
 <.modal
   :if={@live_action in [:new]}
@@ -54,6 +50,3 @@
     patch={~p"/shrink_url"}
   />
 </.modal>
-
-
-
