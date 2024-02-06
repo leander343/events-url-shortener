@@ -1,0 +1,53 @@
+<.header>
+  Listing urls
+  <:actions>
+    <.link patch={~p"/shrink_url/new"}>
+      <.button>New Shrink url</.button>
+    </.link>
+    <.link patch={~p"/metrics"}>
+      <.button>View Metrics</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="shrink_url"
+  rows={@streams.shrink_url_collection}
+  row_click={fn {_id, shrink_url} -> JS.navigate(~p"/shrink_url/#{shrink_url.key}") end}
+>
+  <:col :let={{_id, shrink_url}} label="Key"><%= shrink_url.key %></:col>
+  <:col :let={{_id, shrink_url}} label="Url"><%= shrink_url.url %></:col>
+  <:col :let={{_id, shrink_url}} label="Short Url">
+    <%= EventsUrlShortenerWeb.Endpoint.url() %>/<%= shrink_url.key %>
+  </:col>
+  <:col :let={{_id, shrink_url}} label="Hit count"><%= shrink_url.hit_count %></:col>
+  <:action :let={{_id, shrink_url}}>
+    <div class="sr-only">
+      <.link navigate={~p"/shrink_url/#{shrink_url.key}"}>Show</.link>
+    </div>
+  </:action>
+  <:action :let={{id, shrink_url}}>
+    <.link
+      phx-click={JS.push("delete", value: %{key: shrink_url.key}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new]}
+  id="shrink_url-modal"
+  show
+  on_cancel={JS.patch(~p"/shrink_url")}
+>
+  <.live_component
+    module={EventsUrlShortenerWeb.ShrinkUrlLive.FormComponent}
+    id={@shrink_url.id || :new}
+    title={@page_title}
+    action={@live_action}
+    shrink_url={@shrink_url}
+    patch={~p"/shrink_url"}
+  />
+</.modal>

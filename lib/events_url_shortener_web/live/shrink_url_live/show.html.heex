@@ -1,0 +1,30 @@
+<.header>
+  Shrink url <%= @shrink_url.id %>
+</.header>
+
+<.list>
+  <:item title="Key"><%= @shrink_url.key %></:item>
+  <:item title="Url"><%= @shrink_url.url %></:item>
+  <:item title="Hit count"><%= @shrink_url.hit_count %></:item>
+  <:item title="Short Url">
+    <%= EventsUrlShortenerWeb.Endpoint.url() %>/<%= @shrink_url.key %>
+  </:item>
+</.list>
+
+<.back navigate={~p"/shrink_url"}>Back to shrink_url</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="shrink_url-modal"
+  show
+  on_cancel={JS.patch(~p"/shrink_url/#{@shrink_url}")}
+>
+  <.live_component
+    module={EventsUrlShortenerWeb.ShrinkUrlLive.FormComponent}
+    key={@shrink_url.key}
+    title={@page_title}
+    action={@live_action}
+    shrink_url={@shrink_url}
+    patch={~p"/shrink_url/#{@shrink_url}"}
+  />
+</.modal>
