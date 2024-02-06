@@ -12,8 +12,7 @@ defmodule EventsUrlShortener.ShrinkUrlsFixtures do
       attrs
       |> Enum.into(%{
         hit_count: 42,
-        key: "some key",
-        url: "some url"
+        url: "http://example.com"
       })
       |> EventsUrlShortener.ShrinkUrls.create_shrink_url()
 

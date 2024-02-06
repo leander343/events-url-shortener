@@ -68,7 +68,9 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.FormComponent do
   end
 
   defp save_shrink_url(socket, :new, shrink_url_params) do
-    case ShrinkUrls.create_shrink_url(shrink_url_params) do
+    case ShrinkUrls.create_shrink_url(
+           Map.new(shrink_url_params, fn {k, v} -> {String.to_atom(k), v} end)
+         ) do
       {:ok, shrink_url} ->
         notify_parent({:saved, shrink_url})
 

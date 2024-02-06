@@ -1,11 +1,13 @@
+
+# TO DO: Figure out Auth and testing page
 # defmodule EventsUrlShortenerWeb.ShrinkUrlLiveTest do
 #   use EventsUrlShortenerWeb.ConnCase
 
 #   import Phoenix.LiveViewTest
 #   import EventsUrlShortener.ShrinkUrlsFixtures
 
-#   @create_attrs %{hit_count: 42, key: "some key", url: "some url"}
-#   @update_attrs %{hit_count: 43, key: "some updated key", url: "some updated url"}
+#   @create_attrs %{hit_count: 42, url: "http://example.com"}
+#   @update_attrs %{hit_count: 43, key: "some updated key", url: "http://example.com"}
 #   @invalid_attrs %{hit_count: nil, key: nil, url: nil}
 
 #   defp create_shrink_url(_) do
@@ -87,27 +89,6 @@
 #       assert html =~ shrink_url.key
 #     end
 
-#     test "updates shrink_url within modal", %{conn: conn, shrink_url: shrink_url} do
-#       {:ok, show_live, _html} = live(conn, ~p"/shrink_url/#{shrink_url}")
 
-#       assert show_live |> element("a", "Edit") |> render_click() =~
-#                "Edit Shrink url"
-
-#       assert_patch(show_live, ~p"/shrink_url/#{shrink_url}/show/edit")
-
-#       assert show_live
-#              |> form("#shrink_url-form", shrink_url: @invalid_attrs)
-#              |> render_change() =~ "can&#39;t be blank"
-
-#       assert show_live
-#              |> form("#shrink_url-form", shrink_url: @update_attrs)
-#              |> render_submit()
-
-#       assert_patch(show_live, ~p"/shrink_url/#{shrink_url}")
-
-#       html = render(show_live)
-#       assert html =~ "Shrink url updated successfully"
-#       assert html =~ "some updated key"
-#     end
 #   end
 # end

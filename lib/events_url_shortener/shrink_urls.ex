@@ -59,8 +59,8 @@ defmodule EventsUrlShortener.ShrinkUrls do
 
   # Generates and assigns a random key when key is blank.
   defp assign_random_key(attrs) do
-    if attrs["key"] in [nil, ""] do
-      Map.put(attrs, "key", random_string(4))
+    if attrs[:key] in [nil, ""] do
+      Map.put(attrs, :key, random_string(4))
     else
       attrs
     end

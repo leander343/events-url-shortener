@@ -45,7 +45,7 @@ defmodule EventsUrlShortener.MetricsServer do
     if location.ip == "127.0.0.1" do
       Metrics.create_metric(Map.put(attrs, :location, "local"))
     else
-      # Obtain Continent using country code
+      # Obtain Continent using country code, but commented now due to issues with package
       #  region = Countries.filter_by(:alpha2, location.country)
 
       Metrics.create_metric(Map.put(attrs, :location, "Asia"))
