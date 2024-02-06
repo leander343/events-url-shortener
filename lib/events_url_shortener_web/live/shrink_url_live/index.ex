@@ -4,8 +4,11 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.Index do
   alias EventsUrlShortener.ShrinkUrls
   alias EventsUrlShortener.ShrinkUrls.ShrinkUrl
 
+  @topic "update"
+
   @impl true
   def mount(_params, _session, socket) do
+    if connected?(socket), do: Phoenix.PubSub.subscribe(EventsUrlShortener.PubSub, @topic)
     {:ok, stream(socket, :shrink_url_collection, ShrinkUrls.get_shrink_url())}
   end
 
@@ -38,6 +41,13 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.Index do
         socket
       ) do
     {:noreply, stream_insert(socket, :shrink_url_collection, shrink_url)}
+  end
+
+ # Handle pub sub call from Gen Server and update metrics
+  @impl true
+  def handle_info({:pubsub, _message}, socket) do
+    send_update(EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent, id: "metrics")
+    {:noreply, stream(socket, :shrink_url_collection, ShrinkUrls.get_shrink_url())}
   end
 
   @impl true

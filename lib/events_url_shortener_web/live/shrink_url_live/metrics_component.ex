@@ -1,52 +1,54 @@
-defmodule EventsUrlShortenerWeb.MetricsLive do
-  require Logger
-  use EventsUrlShortenerWeb, :live_view
+defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
+  use EventsUrlShortenerWeb, :live_component
   alias EventsUrlShortener.Metrics
 
-  @topic "update"
+  @impl true
+  def render(assigns) do
+    ~H"""
+    <div>
 
-  # Retrieve counts for different metrics and creaate a Bar chart SVG
+    <h1>Usage Metrics</h1>
+
+      <h2>Browser Types</h2>
+      <%= @browser_chart_svg %>
+
+      <h2>Location</h2>
+      <%= @location_chart_svg %>
+
+
+      <h2>OS Types</h2>
+      <%= @os_chart_svg %>
+    </div>
+    """
+  end
 
   @impl true
-  def mount(_params, _session, socket) do
-    if connected?(socket), do: Phoenix.PubSub.subscribe(EventsUrlShortener.PubSub, @topic)
-    {:ok, assign(socket, :page_title, "Metrics")}
+  def update(assigns,socket) do
+    IO.puts "here"
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> aggregate_metrics()
+     |> assign_dataset()
+     |> assign_chart_svg()}
   end
 
-  # Handle incoming PubSub call from gen server
-  @impl true
-  def handle_info({:pubsub, _message}, socket) do
-    {:noreply, apply_action(socket, :index, %{})}
-  end
-
-  @impl true
-  def handle_params(params, _url, socket) do
-    {:noreply, apply_action(socket, socket.assigns.live_action, params)}
-  end
-
-  defp apply_action(socket, :index, _params) do
-    socket
-    |> aggregate_metrics()
-    |> assign_dataset()
-    |> assign_chart_svg()
-  end
-
-  defp aggregate_metrics(socket) do
+  def aggregate_metrics(socket) do
     socket
     |> assign(:aggregate_browser_agents, Metrics.get_metric_aggregate_browser!())
     |> assign(:aggregate_locations, Metrics.get_metric_aggregate_location!())
     |> assign(:aggregate_os, Metrics.get_metric_aggregate_os!())
   end
 
-  defp assign_dataset(
-         %{
-           assigns: %{
-             aggregate_browser_agents: aggregate_browser_agents,
-             aggregate_locations: aggregate_locations,
-             aggregate_os: aggregate_os
-           }
-         } = socket
-       ) do
+  def assign_dataset(
+        %{
+          assigns: %{
+            aggregate_browser_agents: aggregate_browser_agents,
+            aggregate_locations: aggregate_locations,
+            aggregate_os: aggregate_os
+          }
+        } = socket
+      ) do
     browser_data = Enum.map(aggregate_browser_agents, &[&1.category, &1.total])
     locations_data = Enum.map(aggregate_locations, &[&1.category, &1.total])
     os_data = Enum.map(aggregate_os, &[&1.category, &1.total])
@@ -57,15 +59,15 @@ defmodule EventsUrlShortenerWeb.MetricsLive do
     |> assign(:os_dataset, Contex.Dataset.new(os_data, ["Channel", "Count"]))
   end
 
-  defp assign_chart_svg(
-         %{
-           assigns: %{
-             browser_dataset: browser_dataset,
-             location_dataset: location_dataset,
-             os_dataset: os_dataset
-           }
-         } = socket
-       ) do
+  def assign_chart_svg(
+        %{
+          assigns: %{
+            browser_dataset: browser_dataset,
+            location_dataset: location_dataset,
+            os_dataset: os_dataset
+          }
+        } = socket
+      ) do
     opts = [
       mapping: %{category_col: "Channel", value_col: "Count"},
       colour_palette: ["16a34a", "c13584", "499be4", "FF0000", "00f2ea"],

@@ -4,9 +4,6 @@
     <.link patch={~p"/shrink_url/new"}>
       <.button>New Shrink url</.button>
     </.link>
-    <.link patch={~p"/metrics"}>
-      <.button>View Metrics</.button>
-    </.link>
   </:actions>
 </.header>
 
@@ -36,6 +33,12 @@
   </:action>
 </.table>
 
+
+  <.live_component
+    module={EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent}
+    id="metrics"
+  />
+
 <.modal
   :if={@live_action in [:new]}
   id="shrink_url-modal"
@@ -51,3 +54,6 @@
     patch={~p"/shrink_url"}
   />
 </.modal>
+
+
+

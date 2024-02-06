@@ -74,7 +74,6 @@ defmodule EventsUrlShortenerWeb.Router do
       live "/shrink_url/:id/edit", ShrinkUrlLive.Index, :edit
       live "/shrink_url/:id", ShrinkUrlLive.Show, :show
       live "/shrink_url/:id/show/edit", ShrinkUrlLive.Show, :edit
-      live "/metrics", MetricsLive, :index
     end
   end
 
