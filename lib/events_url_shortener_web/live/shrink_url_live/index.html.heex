@@ -7,10 +7,7 @@
   </:actions>
 </.header>
 
-<.table
-  id="shrink_url"
-  rows={@streams.shrink_url_collection}
->
+<.table id="shrink_url" rows={@streams.shrink_url_collection}>
   <:col :let={{_id, shrink_url}} label="Key"><%= shrink_url.key %></:col>
   <:col :let={{_id, shrink_url}} label="Url"><%= shrink_url.url %></:col>
   <:col :let={{_id, shrink_url}} label="Short Url">
