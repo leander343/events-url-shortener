@@ -52,7 +52,6 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.Index do
 
   @impl true
   def handle_event("delete", %{"key" => key}, socket) do
-    IO.puts(key)
     shrink_url = ShrinkUrls.get_shrink_url_by_key(key)
     {:ok, _} = ShrinkUrls.delete_shrink_url(shrink_url)
 

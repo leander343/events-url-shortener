@@ -49,8 +49,8 @@ if config_env() == :prod do
       """
 
   host =
-    System.get_env("FLY_APP_NAME") ||
-      raise "FLY_APP_NAME not available"
+    System.get_env("PHX_HOST")||
+      raise "HOST_NAME not available"
 
   port = String.to_integer(System.get_env("PORT") || "4000")
 
@@ -58,6 +58,7 @@ if config_env() == :prod do
 
   config :events_url_shortener, EventsUrlShortenerWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
+    check_origin: :conn,
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
@@ -106,15 +107,14 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
-  #     config :events_url_shortener, EventsUrlShortener.Mailer,
-  #       adapter: Swoosh.Adapters.Mailgun,
-  #       api_key: System.get_env("MAILGUN_API_KEY"),
-  #       domain: System.get_env("MAILGUN_DOMAIN")
+      config :events_url_shortener, EventsUrlShortener.Mailer,
+        adapter: Swoosh.Adapters.Sendgrid,
+        api_key: System.get_env("SENDGRID_API_KEY")
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
   #
-  #     config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+      config :swoosh, :api_client, Swoosh.ApiClient.Hackney
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end

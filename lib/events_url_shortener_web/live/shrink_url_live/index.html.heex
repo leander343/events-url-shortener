@@ -10,7 +10,6 @@
 <.table
   id="shrink_url"
   rows={@streams.shrink_url_collection}
-  row_click={fn {_id, shrink_url} -> JS.navigate(~p"/shrink_url/#{shrink_url.key}") end}
 >
   <:col :let={{_id, shrink_url}} label="Key"><%= shrink_url.key %></:col>
   <:col :let={{_id, shrink_url}} label="Url"><%= shrink_url.url %></:col>
@@ -19,9 +18,7 @@
   </:col>
   <:col :let={{_id, shrink_url}} label="Hit count"><%= shrink_url.hit_count %></:col>
   <:action :let={{_id, shrink_url}}>
-    <div class="sr-only">
-      <.link navigate={~p"/shrink_url/#{shrink_url.key}"}>Show</.link>
-    </div>
+    <.link navigate={~p"/shrink_url/#{shrink_url.key}"}>Show</.link>
   </:action>
   <:action :let={{id, shrink_url}}>
     <.link

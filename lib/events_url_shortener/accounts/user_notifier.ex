@@ -10,7 +10,7 @@ defmodule EventsUrlShortener.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"EventsUrlShortener", "contact@example.com"})
+      |> from("twiggletot@gmail.com")
       |> subject(subject)
       |> text_body(body)
 

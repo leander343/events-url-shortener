@@ -13,7 +13,7 @@ config :events_url_shortener,
 
 # Configures the endpoint
 config :events_url_shortener, EventsUrlShortenerWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: System.get_env("PHX_HOST")],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: EventsUrlShortenerWeb.ErrorHTML, json: EventsUrlShortenerWeb.ErrorJSON],

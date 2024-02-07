@@ -22,7 +22,6 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
 
   @impl true
   def update(assigns, socket) do
-    IO.puts("here")
 
     {:ok,
      socket
