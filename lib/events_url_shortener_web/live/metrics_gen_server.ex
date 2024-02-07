@@ -38,18 +38,22 @@ defmodule EventsUrlShortener.MetricsServer do
 
     # Obtain location of User through IP lookup
 
-    location = elem(GeoIP.lookup(message), 1)
+    location =
+      elem(
+        GeoIP.lookup(
+          Enum.at(
+            message
+            |> Plug.Conn.get_req_header("fly-client-ip"),
+            0
+          )
+        ),
+        1
+      )
 
-    # Handle calls from local or insert region of call
+    # Find region using country code
+    region = Countries.filter_by(:alpha2, location.country)
 
-    if location.ip == "127.0.0.1" do
-      Metrics.create_metric(Map.put(attrs, :location, "local"))
-    else
-      # Obtain Continent using country code, but commented now due to issues with package
-      #  region = Countries.filter_by(:alpha2, location.country)
-
-      Metrics.create_metric(Map.put(attrs, :location, "Asia"))
-    end
+    Metrics.create_metric(Map.put(attrs, :location, List.first(region).continent))
 
     Phoenix.PubSub.broadcast(
       EventsUrlShortener.PubSub,

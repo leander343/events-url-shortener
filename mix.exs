@@ -64,8 +64,8 @@ defmodule EventsUrlShortener.MixProject do
       {:ua_parser, "~> 1.8"},
       {:contex, "~> 0.5.0"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false}
-      # {:countries, "~> 1.6"}
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:countries, "~> 1.6"}
     ]
   end
 
