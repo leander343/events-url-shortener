@@ -30,6 +30,7 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
      |> assign_chart_svg()}
   end
 
+  # Retrieve metrics from database
   def aggregate_metrics(socket) do
     socket
     |> assign(:aggregate_browser_agents, Metrics.get_metric_aggregate_browser!())
@@ -37,6 +38,7 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
     |> assign(:aggregate_os, Metrics.get_metric_aggregate_os!())
   end
 
+# Enumerate and flatten data so it is parseable by contex library
   def assign_dataset(
         %{
           assigns: %{
@@ -55,7 +57,7 @@ defmodule EventsUrlShortenerWeb.ShrinkUrlLive.MetricsComponent do
     |> assign(:location_dataset, Contex.Dataset.new(locations_data, ["Channel", "Count"]))
     |> assign(:os_dataset, Contex.Dataset.new(os_data, ["Channel", "Count"]))
   end
-
+# Feed datasets to Contex to create bar chart SVG's with updated data
   def assign_chart_svg(
         %{
           assigns: %{

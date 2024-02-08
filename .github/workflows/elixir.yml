@@ -128,7 +128,9 @@ jobs:
     - name: Run tests
       run: mix test
 
+
   deploy:
+    # Build and deploy Docker image to flyctl 
     name: Deploy app
     runs-on: ubuntu-latest
     needs: test

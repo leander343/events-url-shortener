@@ -18,8 +18,9 @@
   export POSTGRES_DATABASE=<database-name>
   export GEOIP_API_KEY=<key>
   export SENDGRID_API_KEY=<key>
-  export SECRET_KEY_BASE=GEN_secret
+  export SECRET_KEY_BASE=<gen_secret>
    ```
+SECRET_KEY_BASE can be generated using `mix phx.gen.secret`
 
 
 
@@ -61,31 +62,35 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Architecture and flow: 
 
-![Alt text](.github/workflows/Flow_diagram.png "System Flow")
+![Alt text](.github/workflows/flowDiagram.png "System Flow")
 
 
-The Phoenix app is hosted on a vm with scale count set to 2 and connected to a Postgres instance on Fly.io.
+The Phoenix app is hosted on a vm with scale count set to 2 and connected to a dev Postgres cluster on Fly.io. 
+Load balacing to the machines are handled by Fly.io and doesn't require any additonal setup. 
 
 ## Special Considerations and Improvements: 
 
-### Scalability : 
+### Scalability & Reliability : 
 
-- Scaling in Fly.io as far as I can understand happens automatically when the soft limit/hard limit is hit for the concurrency numbers set, so for now there are 2 VMs running with a soft limit of 300 and a hard limit of 500. Eyeballing these numbers for now, but a more accurate number will require some load testing and observing traffic further. 
+- Scaling in Fly.io as far as I can understand has to be done manually for current versions, have to a bit of load testing to determine maximum concurrent connections. 
 
-- Min machines available set to 1 to prevent issues due to cold start.
+- There are 2 Vm's running right now with a Soft limit of 300 and Hard limit of 500 concurrent connections. These values are based on an assumption for now, an optimal can be arrived at by observing metrics based on traffic. 
 
-- Rolling strategy set by default should make sure the service doesn't go down totally during deployment. 
+- Min machines available set to 1 to keep a server running at all times and to keep costs low while preventing delays caused by cold start.
 
-- If there are multiple elixir nodes which aren't clustered, this solution should be scalable but with the exception of being able to update the live view only in the node the GenServer is attached to as the PubSub call won't propogate to other nodes. 
+- Rolling strategy set by default by Fly.io to prevent service from going down during deployments. 
 
-- On the other hand if the elixir nodes are connected as a cluster, there would be a problem with all Genserver processes across the cluster intercepting a PubSub call from any one of the nodes. This would need to be handled before scaling up. 
+- If there are multiple elixir nodes which aren't clustered, this solution can be scalable but with the exception of not being able to propogate the pub sub call across all nodes and updating live view.  
+
+- On the other hand if the elixir nodes are connected as a cluster, pub sub calls will be intercepted by every Gen Server subscribed to the topic resulting in multiple writes of the same metric. 
 
 - Possible solutions: 
      * Database locking to prevent concurrent writes of metrics.
-     * Pushing to a common queue maintained in Redis that the GenServer can probably pick off of and store metrics later.  
-     * A possible way to manage these GenServer processes using PG2 
+     * Using a process registry so only a GenServer handles the PubSub call.
 
-Probably have to look into these further to better understand solutions to concurrency.
+The second case might be a bit more preferrable preventing connections being made to the Database server by every GenServer process on a pubsub call. 
+
+Probably have to look into these further to better understand these solutions and building it using Elixir. 
 
 ### Security:
 - All routes with the exception of the home page, login pages and redirection URLs can only be accessed by authorized users.
@@ -97,7 +102,7 @@ Probably have to look into these further to better understand solutions to concu
 
 ### Metrics: 
 
-- Add currently displayed aggregate metrics and daily impressions etc further per specific URL, haven't done it now due to time constraints and keeping things simple.  
+- Add to currently displayed aggregate metrics, daily impressions, failure rates etc further per specific URL, haven't done it now due to time constraints and keeping things simple.  
 
 ### Demo 
 
