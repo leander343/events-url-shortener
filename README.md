@@ -103,7 +103,7 @@ Probably have to look into these further to better understand solutions to concu
 
 Demo-URL: https://events-url-shortener.fly.dev
 
-Username: admins@events.inc
+Username: admin@events.inc
 </br>
 Password: adminuser123!
 </br>
