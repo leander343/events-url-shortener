@@ -104,14 +104,7 @@ Probably have to look into these further to better understand these solutions an
 
 - Add to currently displayed aggregate metrics, daily impressions, failure rates etc further per specific URL, haven't done it now due to time constraints and keeping things simple.  
 
-### Demo 
 
-Demo-URL: https://events-url-shortener.fly.dev
 
-Username: admin@events.inc
-</br>
-Password: adminuser123!
-</br>
-Demo Shrink URL: https://events-url-shortener.fly.dev/ZMmf
 
 
